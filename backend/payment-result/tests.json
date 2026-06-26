@@ -1,0 +1,12 @@
+{
+  "tests": [
+    {
+      "name": "Bad signature returns 400",
+      "method": "POST",
+      "path": "/",
+      "body": "OutSum=500.00&InvId=1&SignatureValue=badbadbad",
+      "expectedStatus": 400,
+      "bodyMatcher": "partial"
+    }
+  ]
+}

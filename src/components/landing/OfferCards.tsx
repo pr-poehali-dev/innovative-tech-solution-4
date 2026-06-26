@@ -2,6 +2,9 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Icon from '@/components/ui/icon'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+
+const CREATE_PAYMENT_URL = 'https://functions.poehali.dev/abcfa9a0-6be9-4357-bc64-540dea1ecbac'
 
 interface CardData {
   id: string
@@ -30,6 +33,70 @@ const cards: CardData[] = [
     subtitle: 'Получить методичку',
   },
 ]
+
+function PayBlock() {
+  const [email, setEmail] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+
+  const handlePay = async () => {
+    if (!email.includes('@')) {
+      setError('Введите корректный email')
+      return
+    }
+    setError('')
+    setLoading(true)
+    try {
+      const res = await fetch(CREATE_PAYMENT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+      const data = await res.json()
+      if (data.url) {
+        window.location.href = data.url
+      } else {
+        setError('Ошибка создания платежа. Попробуйте ещё раз.')
+      }
+    } catch {
+      setError('Ошибка сети. Попробуйте ещё раз.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div className="flex flex-col gap-5">
+      <div className="flex items-end gap-2">
+        <span className="text-4xl md:text-5xl font-bold text-white">500 ₽</span>
+        <span className="text-neutral-500 mb-1">единоразово</span>
+      </div>
+      <p className="text-base md:text-lg">
+        После оплаты вы сразу получите доступ к методичке в PDF — её можно скачать
+        и читать на любом устройстве.
+      </p>
+      <div className="flex flex-col gap-3">
+        <Input
+          type="email"
+          placeholder="Ваш email для получения доступа"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="bg-white/5 border-white/20 text-white placeholder:text-neutral-500 rounded-2xl h-12"
+        />
+        {error && <p className="text-red-400 text-sm">{error}</p>}
+        <Button
+          size="lg"
+          className="bg-[#FF4D00] text-black hover:bg-[#FF4D00]/90 font-semibold rounded-2xl"
+          onClick={handlePay}
+          disabled={loading}
+        >
+          <Icon name={loading ? 'Loader2' : 'Lock'} size={18} className={`mr-2 ${loading ? 'animate-spin' : ''}`} />
+          {loading ? 'Создаём платёж...' : 'Оплатить и получить доступ'}
+        </Button>
+      </div>
+    </div>
+  )
+}
 
 const topics: { section?: string; items: string[] }[] = [
   { items: ['Капитал и где он формируется'] },
@@ -199,23 +266,7 @@ export default function OfferCards() {
                       )}
 
                       {card.id === 'pay' && (
-                        <div className="flex flex-col gap-5">
-                          <div className="flex items-end gap-2">
-                            <span className="text-4xl md:text-5xl font-bold text-white">990 ₽</span>
-                            <span className="text-neutral-500 mb-1">единоразово</span>
-                          </div>
-                          <p className="text-base md:text-lg">
-                            После оплаты вы сразу получите доступ к методичке в PDF — её можно скачать
-                            и читать на любом устройстве.
-                          </p>
-                          <Button
-                            size="lg"
-                            className="bg-[#FF4D00] text-black hover:bg-[#FF4D00]/90 font-semibold rounded-2xl"
-                          >
-                            <Icon name="Lock" size={18} className="mr-2" />
-                            Оплатить и получить доступ
-                          </Button>
-                        </div>
+                        <PayBlock />
                       )}
                     </div>
                   </motion.div>

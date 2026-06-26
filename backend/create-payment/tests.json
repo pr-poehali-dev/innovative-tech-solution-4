@@ -1,0 +1,13 @@
+{
+  "tests": [
+    {
+      "name": "Create payment link",
+      "method": "POST",
+      "path": "/",
+      "body": {"email": "test@example.com"},
+      "expectedStatus": 200,
+      "expectedBody": {"url": "string"},
+      "bodyMatcher": "partial"
+    }
+  ]
+}

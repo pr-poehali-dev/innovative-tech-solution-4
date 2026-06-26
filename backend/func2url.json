@@ -1,0 +1,5 @@
+{
+  "payment-result": "https://functions.poehali.dev/3d08b680-0c55-4978-9acf-e17869a9a934",
+  "get-pdf": "https://functions.poehali.dev/78d6435c-1564-47f4-9a85-1a7dca88a933",
+  "create-payment": "https://functions.poehali.dev/abcfa9a0-6be9-4357-bc64-540dea1ecbac"
+}
