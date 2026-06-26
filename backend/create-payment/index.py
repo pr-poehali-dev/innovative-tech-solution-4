@@ -44,6 +44,9 @@ def handler(event: dict, context) -> dict:
     signature_str = f"{login}:{amount}:{order_id}:{password1}"
     signature = hashlib.md5(signature_str.encode()).hexdigest()
 
+    site_url = os.environ.get('SITE_URL', 'https://p19205078.poehali.dev')
+    success_url = f"{site_url}/success?Email={email}&InvId={order_id}"
+
     pay_url = (
         f"https://auth.robokassa.ru/Merchant/Index.aspx"
         f"?MerchantLogin={login}"
@@ -53,6 +56,7 @@ def handler(event: dict, context) -> dict:
         f"&SignatureValue={signature}"
         f"&Email={email}"
         f"&Culture=ru"
+        f"&SuccessURL={success_url}"
     )
 
     return {
