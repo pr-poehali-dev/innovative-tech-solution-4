@@ -22,7 +22,7 @@ def handler(event: dict, context) -> dict:
 
     login = os.environ['ROBOKASSA_LOGIN']
     password1 = os.environ['ROBOKASSA_PASSWORD1']
-    amount = '500.00'
+    amount = '535.00'
     description = 'Методичка по фондовому рынку'
 
     conn = psycopg2.connect(os.environ['DATABASE_URL'])

@@ -68,7 +68,7 @@ function PayBlock() {
   return (
     <div className="flex flex-col gap-5">
       <div className="flex items-end gap-2">
-        <span className="text-4xl md:text-5xl font-bold text-white">500 ₽</span>
+        <span className="text-4xl md:text-5xl font-bold text-white">535 ₽</span>
         <span className="text-neutral-500 mb-1">единоразово</span>
       </div>
       <p className="text-base md:text-lg">
